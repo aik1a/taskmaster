@@ -1,0 +1,42 @@
+plugins {
+    alias(libs.plugins.android.application)
+}
+
+android {
+    namespace 'com.example.taskmaster'
+
+    compileSdk {
+        version = release(36) {
+            minorApiLevel = 1
+        }
+    }
+
+    defaultConfig {
+        applicationId 'com.example.taskmaster'
+        minSdk 24
+        targetSdk 36
+        versionCode 1
+        versionName '1.0'
+
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
+    }
+}
+
+dependencies {
+    implementation libs.appcompat
+    implementation libs.material
+    implementation libs.activity.ktx
+    implementation libs.constraintlayout
+    implementation libs.recyclerview
+    implementation libs.cardview
+
+    testImplementation libs.junit
+    androidTestImplementation libs.androidx.junit
+    androidTestImplementation libs.espresso.core
+}
+
