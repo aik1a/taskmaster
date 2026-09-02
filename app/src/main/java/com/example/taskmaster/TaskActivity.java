@@ -2,7 +2,14 @@ package com.example.taskmaster;
 
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.RatingBar;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -14,18 +21,37 @@ public class TaskActivity extends AppCompatActivity {
 
     private ArrayList<TaskModel> listaTareas;
     private TaskAdapter taskAdapter;
+    private int totalTareas = 0;
+    private int tareasCompletadas = 0;
+
+    private EditText etNombreTarea;
+    private Spinner spinnerCategoria;
+    private RadioGroup rgPrioridad;
+    private RatingBar ratingDificultad;
+    private CheckBox cbCompletada;
+    private Button btnAgregarTarea;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task);
 
+        etNombreTarea = findViewById(R.id.etNombreTarea);
+        rgPrioridad = findViewById(R.id.rgPrioridad);
+        ratingDificultad = findViewById(R.id.ratingDificultad);
+        cbCompletada = findViewById(R.id.cbCompletada);
+        btnAgregarTarea = findViewById(R.id.btnAgregarTarea);
+
         configurarSpinner();
         configurarRecyclerView();
+
+        if (btnAgregarTarea != null) {
+            btnAgregarTarea.setOnClickListener(v -> agregarTarea());
+        }
     }
 
     private void configurarSpinner() {
-        Spinner spinnerCategoria = findViewById(R.id.spinnerCategoria);
+        spinnerCategoria = findViewById(R.id.spinnerCategoria);
         if (spinnerCategoria != null) {
             ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
                     this,
@@ -44,6 +70,77 @@ public class TaskActivity extends AppCompatActivity {
         if (rvTareas != null) {
             rvTareas.setLayoutManager(new LinearLayoutManager(this));
             rvTareas.setAdapter(taskAdapter);
+        }
+    }
+
+    private void agregarTarea() {
+        String nombre = etNombreTarea != null && etNombreTarea.getText() != null
+                ? etNombreTarea.getText().toString().trim() : "";
+        if (nombre.isEmpty()) {
+            Toast.makeText(this, "Ingresa una tarea", Toast.LENGTH_SHORT).show();
+            if (etNombreTarea != null) {
+                etNombreTarea.setError("Ingresa una tarea");
+                etNombreTarea.requestFocus();
+            }
+            return;
+        }
+        if (etNombreTarea != null) {
+            etNombreTarea.setError(null);
+        }
+
+        int selectedPrioridadId = rgPrioridad != null ? rgPrioridad.getCheckedRadioButtonId() : -1;
+        if (selectedPrioridadId == -1) {
+            Toast.makeText(this, "Selecciona una prioridad", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        RadioButton rbSeleccionado = findViewById(selectedPrioridadId);
+        String prioridad = rbSeleccionado != null ? rbSeleccionado.getText().toString() : "";
+
+        String categoria = (spinnerCategoria != null && spinnerCategoria.getSelectedItem() != null)
+                ? spinnerCategoria.getSelectedItem().toString() : "";
+
+        float dificultad = ratingDificultad != null ? ratingDificultad.getRating() : 0.0f;
+        boolean completada = cbCompletada != null && cbCompletada.isChecked();
+
+        TaskModel tarea = new TaskModel(nombre, categoria, prioridad, dificultad, completada);
+        listaTareas.add(tarea);
+        taskAdapter.notifyDataSetChanged();
+
+        totalTareas++;
+        if (completada) {
+            tareasCompletadas++;
+        }
+
+        actualizarResumen();
+        limpiarFormulario();
+
+        Toast.makeText(this, "Tarea agregada", Toast.LENGTH_SHORT).show();
+    }
+
+    private void actualizarResumen() {
+        // La actualización visual del TableLayout y ProgressBar corresponde a la Fase 7.
+    }
+
+    private void limpiarFormulario() {
+        if (etNombreTarea != null) {
+            etNombreTarea.setText("");
+            etNombreTarea.setError(null);
+        }
+        if (spinnerCategoria != null) {
+            spinnerCategoria.setSelection(0);
+        }
+        if (rgPrioridad != null) {
+            rgPrioridad.clearCheck();
+        }
+        if (ratingDificultad != null) {
+            ratingDificultad.setRating(0.0f);
+        }
+        if (cbCompletada != null) {
+            cbCompletada.setChecked(false);
+        }
+        if (etNombreTarea != null) {
+            etNombreTarea.requestFocus();
         }
     }
 }

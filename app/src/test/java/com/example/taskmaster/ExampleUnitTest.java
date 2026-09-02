@@ -2,12 +2,14 @@ package com.example.taskmaster;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
 import java.util.ArrayList;
+
 
 public class ExampleUnitTest {
     @Test
@@ -121,5 +123,22 @@ public class ExampleUnitTest {
         lista.add(new TaskModel("Tarea 1", "Personal", "Baja", 1.0f, false));
         lista.add(new TaskModel("Tarea 2", "Trabajo", "Alta", 4.0f, true));
         assertEquals(2, adapter.getItemCount());
+    }
+
+    @Test
+    public void taskActivity_camposCanonicos_existen() throws NoSuchFieldException {
+        assertEquals(ArrayList.class, TaskActivity.class.getDeclaredField("listaTareas").getType());
+        assertEquals(TaskAdapter.class, TaskActivity.class.getDeclaredField("taskAdapter").getType());
+        assertEquals(int.class, TaskActivity.class.getDeclaredField("totalTareas").getType());
+        assertEquals(int.class, TaskActivity.class.getDeclaredField("tareasCompletadas").getType());
+    }
+
+    @Test
+    public void taskActivity_metodosCanonicos_existen() throws NoSuchMethodException {
+        assertNotNull(TaskActivity.class.getDeclaredMethod("configurarSpinner"));
+        assertNotNull(TaskActivity.class.getDeclaredMethod("configurarRecyclerView"));
+        assertNotNull(TaskActivity.class.getDeclaredMethod("agregarTarea"));
+        assertNotNull(TaskActivity.class.getDeclaredMethod("actualizarResumen"));
+        assertNotNull(TaskActivity.class.getDeclaredMethod("limpiarFormulario"));
     }
 }
