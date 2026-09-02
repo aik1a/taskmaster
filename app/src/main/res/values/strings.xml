@@ -16,4 +16,7 @@
     <string name="register_phone_prefix">+56</string>
     <string name="register_password_label">Contraseña</string>
     <string name="register_button">Registrar</string>
+
+    <string name="main_title">TaskMaster</string>
+    <string name="main_start_button">Comenzar</string>
 </resources>

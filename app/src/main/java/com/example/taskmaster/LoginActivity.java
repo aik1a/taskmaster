@@ -117,8 +117,10 @@ public class LoginActivity extends AppCompatActivity {
             boolean passCoincide = passwordFinal.equals(savedPassword);
 
             if (idCoincide && passCoincide) {
-                // Credenciales válidas.
-                // En Fase 3 se iniciará MainActivity con EXTRA_NOMBRE.
+                String savedName = prefs.getString(KEY_USER_NAME, "");
+                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                intent.putExtra(MainActivity.EXTRA_NOMBRE, savedName);
+                startActivity(intent);
             } else {
                 Toast.makeText(LoginActivity.this, "Correo/teléfono o contraseña incorrectos.", Toast.LENGTH_SHORT).show();
             }

@@ -57,4 +57,14 @@ public class ExampleUnitTest {
         assertEquals("USER_PHONE", RegisterActivity.KEY_USER_PHONE);
         assertEquals("USER_PASSWORD", RegisterActivity.KEY_USER_PASSWORD);
     }
+
+    @Test
+    public void constanteExtraNombre_cumpleCanon() {
+        assertEquals("EXTRA_NOMBRE", MainActivity.EXTRA_NOMBRE);
+    }
+
+    @Test
+    public void mainActivity_packageName_isCanonical() {
+        assertEquals("com.example.taskmaster", MainActivity.class.getPackage().getName());
+    }
 }
