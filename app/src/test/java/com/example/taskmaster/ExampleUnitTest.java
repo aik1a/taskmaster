@@ -59,6 +59,11 @@ public class ExampleUnitTest {
     }
 
     @Test
+    public void normalizarTelefono_invalidoPrefijo56SinMas() {
+        assertNull(LoginActivity.normalizarTelefonoChileno("56912345678"));
+    }
+
+    @Test
     public void constanteExtraNombre_cumpleCanon() {
         assertEquals("EXTRA_NOMBRE", MainActivity.EXTRA_NOMBRE);
     }
@@ -66,5 +71,10 @@ public class ExampleUnitTest {
     @Test
     public void mainActivity_packageName_isCanonical() {
         assertEquals("com.example.taskmaster", MainActivity.class.getPackage().getName());
+    }
+
+    @Test
+    public void taskActivity_packageName_isCanonical() {
+        assertEquals("com.example.taskmaster", TaskActivity.class.getPackage().getName());
     }
 }

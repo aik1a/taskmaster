@@ -1,5 +1,6 @@
 package com.example.taskmaster;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -32,5 +33,8 @@ public class MainActivity extends AppCompatActivity {
         } else {
             tvDescripcion.setText("Hola, ");
         }
+
+        btnComenzar.setOnClickListener(view ->
+                startActivity(new Intent(MainActivity.this, TaskActivity.class)));
     }
 }

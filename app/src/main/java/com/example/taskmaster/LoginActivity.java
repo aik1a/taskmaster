@@ -140,8 +140,6 @@ public class LoginActivity extends AppCompatActivity {
         String digits;
         if (cleaned.startsWith("+56")) {
             digits = cleaned.substring(3);
-        } else if (cleaned.startsWith("56") && cleaned.length() == 11) {
-            digits = cleaned.substring(2);
         } else {
             digits = cleaned;
         }
