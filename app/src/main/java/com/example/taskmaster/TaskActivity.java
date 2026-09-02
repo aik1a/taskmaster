@@ -5,10 +5,12 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RatingBar;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -119,7 +121,18 @@ public class TaskActivity extends AppCompatActivity {
     }
 
     private void actualizarResumen() {
-        // La actualización visual del TableLayout y ProgressBar corresponde a la Fase 7.
+        int tareasPendientes = totalTareas - tareasCompletadas;
+        int progreso = totalTareas == 0 ? 0 : tareasCompletadas * 100 / totalTareas;
+
+        TextView tvTotalValor = findViewById(R.id.tvTotalValor);
+        TextView tvCompletadasValor = findViewById(R.id.tvCompletadasValor);
+        TextView tvPendientesValor = findViewById(R.id.tvPendientesValor);
+        ProgressBar progressCompletadas = findViewById(R.id.progressCompletadas);
+
+        tvTotalValor.setText(String.valueOf(totalTareas));
+        tvCompletadasValor.setText(String.valueOf(tareasCompletadas));
+        tvPendientesValor.setText(String.valueOf(tareasPendientes));
+        progressCompletadas.setProgress(progreso);
     }
 
     private void limpiarFormulario() {
