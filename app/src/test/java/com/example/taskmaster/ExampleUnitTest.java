@@ -1,9 +1,13 @@
 package com.example.taskmaster;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
+
+import java.util.ArrayList;
 
 public class ExampleUnitTest {
     @Test
@@ -76,5 +80,46 @@ public class ExampleUnitTest {
     @Test
     public void taskActivity_packageName_isCanonical() {
         assertEquals("com.example.taskmaster", TaskActivity.class.getPackage().getName());
+    }
+
+    @Test
+    public void taskModel_packageName_isCanonical() {
+        assertEquals("com.example.taskmaster", TaskModel.class.getPackage().getName());
+    }
+
+    @Test
+    public void taskAdapter_packageName_isCanonical() {
+        assertEquals("com.example.taskmaster", TaskAdapter.class.getPackage().getName());
+    }
+
+    @Test
+    public void taskModel_construccionYGetters_cumplenCanon() {
+        TaskModel tarea = new TaskModel("Comprar insumos", "Personal", "Media", 3.0f, true);
+        assertEquals("Comprar insumos", tarea.getNombre());
+        assertEquals("Personal", tarea.getCategoria());
+        assertEquals("Media", tarea.getPrioridad());
+        assertEquals(3.0f, tarea.getDificultad(), 0.001f);
+        assertTrue(tarea.isCompletada());
+    }
+
+    @Test
+    public void taskModel_tareaPendiente_cumpleCanon() {
+        TaskModel tarea = new TaskModel("Estudiar Android", "Estudio", "Alta", 5.0f, false);
+        assertEquals("Estudiar Android", tarea.getNombre());
+        assertEquals("Estudio", tarea.getCategoria());
+        assertEquals("Alta", tarea.getPrioridad());
+        assertEquals(5.0f, tarea.getDificultad(), 0.001f);
+        assertFalse(tarea.isCompletada());
+    }
+
+    @Test
+    public void taskAdapter_itemCount_reflejaDataset() {
+        ArrayList<TaskModel> lista = new ArrayList<>();
+        TaskAdapter adapter = new TaskAdapter(lista);
+        assertEquals(0, adapter.getItemCount());
+
+        lista.add(new TaskModel("Tarea 1", "Personal", "Baja", 1.0f, false));
+        lista.add(new TaskModel("Tarea 2", "Trabajo", "Alta", 4.0f, true));
+        assertEquals(2, adapter.getItemCount());
     }
 }
