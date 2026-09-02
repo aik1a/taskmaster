@@ -1,0 +1,9 @@
+<resources>
+    <string-array name="registro_generos">
+        <item>Selecciona tu género</item>
+        <item>Femenino</item>
+        <item>Masculino</item>
+        <item>No binario</item>
+        <item>Prefiero no responder</item>
+    </string-array>
+</resources>

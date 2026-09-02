@@ -1,3 +1,19 @@
 <resources>
     <string name="app_name">TaskMaster</string>
+    <string name="login_title">TaskMaster</string>
+    <string name="login_identifier_label">Correo o teléfono</string>
+    <string name="login_password_label">Contraseña</string>
+    <string name="login_button">Ingresar</string>
+    <string name="login_register_button">Registrarse</string>
+    <string name="login_progress_description">Validando credenciales</string>
+
+    <string name="register_title">Crear perfil local</string>
+    <string name="register_name_label">Nombre</string>
+    <string name="register_last_name_label">Apellidos</string>
+    <string name="register_gender_label">Género</string>
+    <string name="register_email_label">Correo electrónico</string>
+    <string name="register_phone_label">Teléfono móvil</string>
+    <string name="register_phone_prefix">+56</string>
+    <string name="register_password_label">Contraseña</string>
+    <string name="register_button">Registrar</string>
 </resources>
