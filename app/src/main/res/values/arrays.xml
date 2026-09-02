@@ -6,4 +6,10 @@
         <item>No binario</item>
         <item>Prefiero no responder</item>
     </string-array>
+
+    <string-array name="task_categories">
+        <item>Personal</item>
+        <item>Estudio</item>
+        <item>Trabajo</item>
+    </string-array>
 </resources>
