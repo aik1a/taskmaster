@@ -20,7 +20,10 @@
     <string name="main_title">TaskMaster</string>
     <string name="main_start_button">Comenzar</string>
 
+    <string name="task_form_title">Nueva tarea</string>
+    <string name="task_form_help">Completa los datos y pulsa Agregar tarea.</string>
     <string name="task_name_label">Nombre de la tarea</string>
+    <string name="task_name_hint">Ej. Comprar materiales</string>
     <string name="task_category_label">Categoría</string>
     <string name="task_priority_label">Prioridad</string>
     <string name="task_priority_high">Alta</string>
@@ -29,9 +32,11 @@
     <string name="task_difficulty_label">Dificultad</string>
     <string name="task_completed_checkbox">Completada</string>
     <string name="task_add_button">Agregar tarea</string>
+    <string name="task_summary_title">Resumen</string>
     <string name="task_summary_total">Total</string>
     <string name="task_summary_completed">Completadas</string>
     <string name="task_summary_pending">Pendientes</string>
     <string name="task_initial_count">0</string>
+    <string name="task_progress_label">Progreso de tareas completadas</string>
     <string name="task_list_title">Tareas</string>
 </resources>

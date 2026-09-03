@@ -19,7 +19,7 @@
             android:id="@+id/scrollFormulario"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_weight="3"
             android:fillViewport="true">
 
             <LinearLayout
@@ -32,10 +32,25 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:text="@string/task_form_title"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="16dp"
+                    android:text="@string/task_form_help"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Body2" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:labelFor="@id/etNombreTarea"
                     android:text="@string/task_name_label" />
 
                 <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
@@ -45,7 +60,8 @@
                         android:id="@+id/etNombreTarea"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:imeOptions="actionNext"
+                        android:hint="@string/task_name_hint"
+                        android:imeOptions="actionDone"
                         android:inputType="textCapSentences|text"
                         android:singleLine="true" />
                 </com.google.android.material.textfield.TextInputLayout>
@@ -130,6 +146,13 @@
                     android:layout_marginBottom="16dp"
                     android:text="@string/task_add_button" />
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:text="@string/task_summary_title"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
+
                 <TableLayout
                     android:id="@+id/tableResumen"
                     android:layout_width="match_parent"
@@ -189,6 +212,13 @@
                     </TableRow>
                 </TableLayout>
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp"
+                    android:text="@string/task_progress_label"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
+
                 <ProgressBar
                     android:id="@+id/progressCompletadas"
                     style="?android:attr/progressBarStyleHorizontal"
@@ -197,6 +227,7 @@
                     android:layout_marginBottom="8dp"
                     android:indeterminate="false"
                     android:max="100"
+                    android:min="0"
                     android:progress="0" />
             </LinearLayout>
         </ScrollView>
