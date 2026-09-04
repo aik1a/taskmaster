@@ -3,6 +3,7 @@ package com.example.taskmaster;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -13,9 +14,16 @@ import java.util.ArrayList;
 public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder> {
 
     private ArrayList<TaskModel> listaTareas;
+    private OnTaskCompletionChangedListener completionChangedListener;
 
-    public TaskAdapter(ArrayList<TaskModel> listaTareas) {
+    public TaskAdapter(ArrayList<TaskModel> listaTareas,
+                       OnTaskCompletionChangedListener completionChangedListener) {
         this.listaTareas = listaTareas;
+        this.completionChangedListener = completionChangedListener;
+    }
+
+    public interface OnTaskCompletionChangedListener {
+        void onTaskCompletionChanged();
     }
 
     @NonNull
@@ -28,11 +36,18 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
     @Override
     public void onBindViewHolder(@NonNull TaskViewHolder holder, int position) {
         TaskModel tarea = listaTareas.get(position);
-        holder.tvItemNombre.setText(tarea.getNombre());
+        holder.cbItemTarea.setOnCheckedChangeListener(null);
+        holder.cbItemTarea.setText(tarea.getNombre());
+        holder.cbItemTarea.setChecked(tarea.isCompletada());
+        holder.cbItemTarea.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            tarea.setCompletada(isChecked);
+            if (completionChangedListener != null) {
+                completionChangedListener.onTaskCompletionChanged();
+            }
+        });
         holder.tvItemCategoria.setText("Categoría: " + tarea.getCategoria());
         holder.tvItemPrioridad.setText("Prioridad: " + tarea.getPrioridad());
         holder.tvItemDificultad.setText("Dificultad: " + (int) tarea.getDificultad() + "/5");
-        holder.tvItemEstado.setText("Estado: " + (tarea.isCompletada() ? "Completada" : "Pendiente"));
     }
 
     @Override
@@ -41,19 +56,17 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
     }
 
     public static class TaskViewHolder extends RecyclerView.ViewHolder {
-        TextView tvItemNombre;
+        CheckBox cbItemTarea;
         TextView tvItemCategoria;
         TextView tvItemPrioridad;
         TextView tvItemDificultad;
-        TextView tvItemEstado;
 
         public TaskViewHolder(@NonNull View itemView) {
             super(itemView);
-            tvItemNombre = itemView.findViewById(R.id.tvItemNombre);
+            cbItemTarea = itemView.findViewById(R.id.cbItemTarea);
             tvItemCategoria = itemView.findViewById(R.id.tvItemCategoria);
             tvItemPrioridad = itemView.findViewById(R.id.tvItemPrioridad);
             tvItemDificultad = itemView.findViewById(R.id.tvItemDificultad);
-            tvItemEstado = itemView.findViewById(R.id.tvItemEstado);
         }
     }
 }

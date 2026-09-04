@@ -3,7 +3,6 @@ package com.example.taskmaster;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
@@ -23,14 +22,11 @@ public class TaskActivity extends AppCompatActivity {
 
     private ArrayList<TaskModel> listaTareas;
     private TaskAdapter taskAdapter;
-    private int totalTareas = 0;
-    private int tareasCompletadas = 0;
 
     private EditText etNombreTarea;
     private Spinner spinnerCategoria;
     private RadioGroup rgPrioridad;
     private RatingBar ratingDificultad;
-    private CheckBox cbCompletada;
     private Button btnAgregarTarea;
 
     @Override
@@ -41,7 +37,6 @@ public class TaskActivity extends AppCompatActivity {
         etNombreTarea = findViewById(R.id.etNombreTarea);
         rgPrioridad = findViewById(R.id.rgPrioridad);
         ratingDificultad = findViewById(R.id.ratingDificultad);
-        cbCompletada = findViewById(R.id.cbCompletada);
         btnAgregarTarea = findViewById(R.id.btnAgregarTarea);
 
         configurarSpinner();
@@ -67,7 +62,7 @@ public class TaskActivity extends AppCompatActivity {
 
     private void configurarRecyclerView() {
         listaTareas = new ArrayList<>();
-        taskAdapter = new TaskAdapter(listaTareas);
+        taskAdapter = new TaskAdapter(listaTareas, this::actualizarResumen);
         RecyclerView rvTareas = findViewById(R.id.rvTareas);
         if (rvTareas != null) {
             rvTareas.setLayoutManager(new LinearLayoutManager(this));
@@ -103,16 +98,10 @@ public class TaskActivity extends AppCompatActivity {
                 ? spinnerCategoria.getSelectedItem().toString() : "";
 
         float dificultad = ratingDificultad != null ? ratingDificultad.getRating() : 0.0f;
-        boolean completada = cbCompletada != null && cbCompletada.isChecked();
 
-        TaskModel tarea = new TaskModel(nombre, categoria, prioridad, dificultad, completada);
+        TaskModel tarea = new TaskModel(nombre, categoria, prioridad, dificultad);
         listaTareas.add(tarea);
         taskAdapter.notifyDataSetChanged();
-
-        totalTareas++;
-        if (completada) {
-            tareasCompletadas++;
-        }
 
         actualizarResumen();
         limpiarFormulario();
@@ -121,6 +110,13 @@ public class TaskActivity extends AppCompatActivity {
     }
 
     private void actualizarResumen() {
+        int totalTareas = listaTareas.size();
+        int tareasCompletadas = 0;
+        for (TaskModel tarea : listaTareas) {
+            if (tarea.isCompletada()) {
+                tareasCompletadas++;
+            }
+        }
         int tareasPendientes = totalTareas - tareasCompletadas;
         int progreso = totalTareas == 0 ? 0 : tareasCompletadas * 100 / totalTareas;
 
@@ -148,9 +144,6 @@ public class TaskActivity extends AppCompatActivity {
         }
         if (ratingDificultad != null) {
             ratingDificultad.setRating(0.0f);
-        }
-        if (cbCompletada != null) {
-            cbCompletada.setChecked(false);
         }
         if (etNombreTarea != null) {
             etNombreTarea.requestFocus();

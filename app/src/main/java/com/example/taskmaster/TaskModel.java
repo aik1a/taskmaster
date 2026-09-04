@@ -7,12 +7,12 @@ public class TaskModel {
     private float dificultad;
     private boolean completada;
 
-    public TaskModel(String nombre, String categoria, String prioridad, float dificultad, boolean completada) {
+    public TaskModel(String nombre, String categoria, String prioridad, float dificultad) {
         this.nombre = nombre;
         this.categoria = categoria;
         this.prioridad = prioridad;
         this.dificultad = dificultad;
-        this.completada = completada;
+        this.completada = false;
     }
 
     public String getNombre() {
@@ -33,5 +33,9 @@ public class TaskModel {
 
     public boolean isCompletada() {
         return completada;
+    }
+
+    public void setCompletada(boolean completada) {
+        this.completada = completada;
     }
 }
