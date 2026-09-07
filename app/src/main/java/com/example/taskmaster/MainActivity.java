@@ -2,11 +2,14 @@ package com.example.taskmaster;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -16,6 +19,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView tvTitulo;
     private TextView tvDescripcion;
     private Button btnComenzar;
+    private TextToSpeech textToSpeech;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,13 +32,35 @@ public class MainActivity extends AppCompatActivity {
         btnComenzar = findViewById(R.id.btnComenzar);
 
         String nombre = getIntent().getStringExtra(EXTRA_NOMBRE);
+        String texto;
         if (nombre != null && !nombre.trim().isEmpty()) {
-            tvDescripcion.setText("Hola, " + nombre.trim());
+            texto = "Hola, " + nombre.trim();
         } else {
-            tvDescripcion.setText("Hola, ");
+            texto = "Hola";
         }
+        tvDescripcion.setText(texto);
 
-        btnComenzar.setOnClickListener(view ->
-                startActivity(new Intent(MainActivity.this, TaskActivity.class)));
+        textToSpeech = new TextToSpeech(this, status -> {
+            if (status == TextToSpeech.SUCCESS) {
+                textToSpeech.setLanguage(Locale.forLanguageTag("es"));
+                textToSpeech.speak(texto, TextToSpeech.QUEUE_FLUSH, null, "tts1");
+            }
+        });
+
+        btnComenzar.setOnClickListener(view -> {
+            if (textToSpeech != null) {
+                textToSpeech.stop();
+            }
+            startActivity(new Intent(MainActivity.this, TaskActivity.class));
+        });
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (textToSpeech != null) {
+            textToSpeech.stop();
+            textToSpeech.shutdown();
+        }
+        super.onDestroy();
     }
 }

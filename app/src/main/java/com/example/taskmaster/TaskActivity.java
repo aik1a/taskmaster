@@ -1,6 +1,7 @@
 package com.example.taskmaster;
 
 import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -17,6 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class TaskActivity extends AppCompatActivity {
 
@@ -28,6 +30,7 @@ public class TaskActivity extends AppCompatActivity {
     private RadioGroup rgPrioridad;
     private RatingBar ratingDificultad;
     private Button btnAgregarTarea;
+    private TextToSpeech textToSpeech;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,11 +42,41 @@ public class TaskActivity extends AppCompatActivity {
         ratingDificultad = findViewById(R.id.ratingDificultad);
         btnAgregarTarea = findViewById(R.id.btnAgregarTarea);
 
+        // Text To Speech automatico
+        textToSpeech = new TextToSpeech(this, status -> {
+            if (status == TextToSpeech.SUCCESS) {
+                textToSpeech.setLanguage(Locale.forLanguageTag("es"));
+                hablar("Gestión de tareas. Completa los datos y agrega tu tarea");
+            }
+        });
+
+        configurarCamposTexto();
         configurarSpinner();
         configurarRecyclerView();
 
         if (btnAgregarTarea != null) {
             btnAgregarTarea.setOnClickListener(v -> agregarTarea());
+        }
+    }
+
+    private void hablar(String texto) {
+        if (textToSpeech != null) {
+            textToSpeech.speak(texto, TextToSpeech.QUEUE_FLUSH, null, "tts1");
+        }
+    }
+
+    private void configurarCamposTexto() {
+        if (etNombreTarea != null) {
+            etNombreTarea.setOnFocusChangeListener((v, hasFocus) -> {
+                if (hasFocus) {
+                    String contenido = etNombreTarea.getText() != null ? etNombreTarea.getText().toString().trim() : "";
+                    if (contenido.isEmpty()) {
+                        hablar("Campo: Nombre de la tarea");
+                    } else {
+                        hablar("Nombre de la tarea: " + contenido);
+                    }
+                }
+            });
         }
     }
 
@@ -74,6 +107,7 @@ public class TaskActivity extends AppCompatActivity {
         String nombre = etNombreTarea != null && etNombreTarea.getText() != null
                 ? etNombreTarea.getText().toString().trim() : "";
         if (nombre.isEmpty()) {
+            hablar("Ingresa una tarea");
             Toast.makeText(this, "Ingresa una tarea", Toast.LENGTH_SHORT).show();
             if (etNombreTarea != null) {
                 etNombreTarea.setError("Ingresa una tarea");
@@ -87,6 +121,7 @@ public class TaskActivity extends AppCompatActivity {
 
         int selectedPrioridadId = rgPrioridad != null ? rgPrioridad.getCheckedRadioButtonId() : -1;
         if (selectedPrioridadId == -1) {
+            hablar("Selecciona una prioridad");
             Toast.makeText(this, "Selecciona una prioridad", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -106,6 +141,7 @@ public class TaskActivity extends AppCompatActivity {
         actualizarResumen();
         limpiarFormulario();
 
+        hablar("Tarea " + nombre + " agregada con éxito");
         Toast.makeText(this, "Tarea agregada", Toast.LENGTH_SHORT).show();
     }
 
@@ -125,10 +161,10 @@ public class TaskActivity extends AppCompatActivity {
         TextView tvPendientesValor = findViewById(R.id.tvPendientesValor);
         ProgressBar progressCompletadas = findViewById(R.id.progressCompletadas);
 
-        tvTotalValor.setText(String.valueOf(totalTareas));
-        tvCompletadasValor.setText(String.valueOf(tareasCompletadas));
-        tvPendientesValor.setText(String.valueOf(tareasPendientes));
-        progressCompletadas.setProgress(progreso);
+        if (tvTotalValor != null) tvTotalValor.setText(String.valueOf(totalTareas));
+        if (tvCompletadasValor != null) tvCompletadasValor.setText(String.valueOf(tareasCompletadas));
+        if (tvPendientesValor != null) tvPendientesValor.setText(String.valueOf(tareasPendientes));
+        if (progressCompletadas != null) progressCompletadas.setProgress(progreso);
     }
 
     private void limpiarFormulario() {
@@ -148,5 +184,14 @@ public class TaskActivity extends AppCompatActivity {
         if (etNombreTarea != null) {
             etNombreTarea.requestFocus();
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (textToSpeech != null) {
+            textToSpeech.stop();
+            textToSpeech.shutdown();
+        }
+        super.onDestroy();
     }
 }
